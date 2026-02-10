@@ -1,1 +1,0 @@
-TRANSCRIPT_FILE = "transcript.txt"
