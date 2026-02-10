@@ -1,5 +1,7 @@
-from server.src.transcription.constants import TRANSCRIPT_FILE
+from pathlib import Path
 import whisper
+
+from server.src.constants import TRANSCRIPT_FILE
 
 model = whisper.load_model("turbo")
 
@@ -8,5 +10,4 @@ async def transcribe(audio: bytes) -> None:
     save_transcription(transcript["text"])
 
 def save_transcription(transcription: str) -> None:
-    with open(TRANSCRIPT_FILE, "w") as f:
-        f.write(transcription)
+    Path(TRANSCRIPT_FILE).write_text(transcription)
