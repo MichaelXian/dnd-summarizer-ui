@@ -18,3 +18,10 @@ app.add_middleware(
 )
 
 init()
+
+class ServerState:
+    def __init__(self):
+        self.rag_model = None
+
+state = ServerState()
+

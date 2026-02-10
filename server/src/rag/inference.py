@@ -103,8 +103,5 @@ class RAGModel:
         return self.__generate(conversation)
 
 def get_rag_model() -> RAGModel:
-    if Path(CHUNKS_FILE).exists():
-        summarized_chunks = json.loads(Path(CHUNKS_FILE).read_text())
-    else:
-        raise FileNotFoundError("Chunks file not found")
+    summarized_chunks = json.loads(Path(CHUNKS_FILE).read_text())
     return RAGModel(summarized_chunks)
