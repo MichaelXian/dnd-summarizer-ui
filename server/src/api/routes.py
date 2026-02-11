@@ -20,7 +20,7 @@ def cleanup():
     state.status = Status.AWAITING_DATA
     state.rag_model = None
 
-async def session_audio_handler(audio: bytes):
+def session_audio_handler(audio: bytes):
     transcribe(audio)
     summarize_transcript()
     generate_chunks()
@@ -39,3 +39,10 @@ def handle_session_audio(audio: bytes, response: Response, background_tasks: Bac
     background_tasks.add_task(session_audio_handler, audio)
 
     return {"status": "ok"}
+
+@router.get("/transcript", status_code=200)
+def get_transcript(response: Response):
+    if state.status != Status.READY:
+        response.status_code = 503
+        return {"error": "No transcript available yet"}
+    return Path(TRANSCRIPT_FILE).read_text()
