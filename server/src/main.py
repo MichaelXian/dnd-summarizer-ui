@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from server.src.init import init
+from server.src.api.routes import router
 
 origins = [
     "http://localhost:3000",  # React dev server
@@ -19,9 +20,4 @@ app.add_middleware(
 
 init()
 
-class ServerState:
-    def __init__(self):
-        self.rag_model = None
-
-state = ServerState()
-
+app.include_router(router)
