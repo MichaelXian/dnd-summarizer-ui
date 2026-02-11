@@ -5,7 +5,7 @@ from server.src.constants import TRANSCRIPT_FILE
 
 model = whisper.load_model("turbo")
 
-async def transcribe(audio: bytes) -> None:
+def transcribe(audio: bytes) -> None:
     transcript = model.transcribe(audio)
     save_transcription(transcript["text"])
 

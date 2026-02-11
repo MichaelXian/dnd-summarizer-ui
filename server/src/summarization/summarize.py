@@ -47,7 +47,7 @@ def summarize_document(document,
 
     return chunk_summaries
 
-async def summarize_transcript() -> None:
+def summarize_transcript() -> None:
     transcript = Path(TRANSCRIPT_FILE).read_text()
     chunked_summaries = summarize_document(transcript)
     combined_prompt = "summarize: " + "\n".join(chunked_summaries)
