@@ -3,6 +3,8 @@ from fastapi.openapi.models import Response
 from pathlib import Path
 from fastapi import BackgroundTasks
 
+from server.src.audio.stt import transcribe_audio
+from server.src.audio.tts import text_to_speech
 from server.src.constants import TRANSCRIPT_FILE, SUMMARY_FILE, CHUNKS_FILE
 from server.src.rag.chunking import generate_chunks
 from server.src.rag.inference import get_rag_model
@@ -53,3 +55,19 @@ def get_summary(response: Response):
         response.status_code = 503
         return {"error": "No summary available yet"}
     return Path(SUMMARY_FILE).read_text()
+
+@router.post("/chat", status_code=200)
+def chat(audio: bytes, response: Response, background_tasks: BackgroundTasks):
+    if state.status != Status.READY:
+        response.status_code = 503
+        return {"error": "Chat available yet"}
+
+    query = transcribe_audio(audio)
+    model_response = state.rag_model.chat(query)
+
+    background_tasks.add_task(text_to_speech, model_response)
+
+    return {
+        "query": query,
+        "response": model_response
+    }
