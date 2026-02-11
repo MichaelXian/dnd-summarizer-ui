@@ -46,3 +46,10 @@ def get_transcript(response: Response):
         response.status_code = 503
         return {"error": "No transcript available yet"}
     return Path(TRANSCRIPT_FILE).read_text()
+
+@router.get("/summary", status_code=200)
+def get_summary(response: Response):
+    if state.status != Status.READY:
+        response.status_code = 503
+        return {"error": "No summary available yet"}
+    return Path(SUMMARY_FILE).read_text()
