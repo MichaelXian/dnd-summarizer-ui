@@ -1,3 +1,5 @@
+node_modules
+
 # Server temp files
 server/src/*.txt
 server/src/*.json

@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "dnd-summarizer-ui/node_modules/.bin/vite",
+    "build": "dnd-summarizer-ui/node_modules/.bin/tsc -b && vite build",
+    "lint": "dnd-summarizer-ui/node_modules/.bin/eslint .",
+    "preview": "dnd-summarizer-ui/node_modules/.bin/vite preview"
   },
   "dependencies": {
     "react": "^19.2.0",
