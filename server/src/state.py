@@ -10,5 +10,4 @@ class ServerState:
         self.status = Status.AWAITING_DATA
         self.rag_model = None
 
-
 state = ServerState()
