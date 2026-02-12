@@ -4,17 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "dnd-summarizer-ui/node_modules/.bin/vite",
-    "build": "dnd-summarizer-ui/node_modules/.bin/tsc -b && vite build",
-    "lint": "dnd-summarizer-ui/node_modules/.bin/eslint .",
-    "preview": "dnd-summarizer-ui/node_modules/.bin/vite preview"
+    "dev": "bash node_modules/.bin/vite",
+    "build": "bash node_modules/.bin/tsc -b && vite build",
+    "lint": "bash node_modules/.bin/eslint .",
+    "preview": "bash node_modules/.bin/vite preview"
   },
   "dependencies": {
+    "axios": "^1.13.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/axios": "^0.9.36",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
