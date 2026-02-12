@@ -4,12 +4,13 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from pathlib import Path
 
-from transformers import AutoModelForCausalLM
-from transformers import AutoTokenizer
-
 from server.src.constants import CHUNKS_FILE, DEVICE
+from server.src.models.load_model import load_peft_model
 
-model_name = "nightfury2986/llama323-dnd-finetuned"
+model, tokenizer = load_peft_model("meta-llama/Llama-3.2-3B-Instruct", "nightfury2986/llama323-dnd-finetuned", "causal")
+
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right"
 
 system_prompt = """
 # Context
@@ -42,11 +43,6 @@ Respond in a few short sentences, with clarifications on rules or mechanics wher
 
 class RAGModel:
     def __init__(self, summarized_chunks: dict[str, list[str]]):
-        self.model = AutoModelForCausalLM.from_pretrained(model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.tokenizer.pad_token = self.tokenizer.eos_token
-        self.tokenizer.padding_side = "right"
-
         self.summarized_chunks = summarized_chunks
         self.transformer = SentenceTransformer("all-MiniLM-L6-v2")
         self.keys = list(summarized_chunks.keys())
@@ -70,7 +66,7 @@ class RAGModel:
 
     def __generate(self, conversation):
 
-        inputs = self.tokenizer.apply_chat_template(
+        inputs = tokenizer.apply_chat_template(
             conversation,
             tokenize=True,
             add_generation_prompt=True,
@@ -79,14 +75,14 @@ class RAGModel:
         ).to(DEVICE)
 
         input_length = len(inputs[0])
-        outputs = self.model.generate(
+        outputs = model.generate(
             inputs=inputs["input_ids"],
             attention_mask=inputs["attention_mask"],
             max_new_tokens=200,
-            pad_token_id=self.tokenizer.eos_token_id
+            pad_token_id=tokenizer.eos_token_id
         )
         generated_tokens = outputs[0][input_length:]
-        return self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+        return tokenizer.decode(generated_tokens, skip_special_tokens=True)
 
     def chat(self, query):
         excerpts = self.__rag_query(query)

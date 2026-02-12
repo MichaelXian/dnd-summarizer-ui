@@ -1,11 +1,12 @@
 import json
 from pathlib import Path
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from server.src.constants import SUMMARIZATION_MODEL, DEVICE, TRANSCRIPT_FILE, CHUNKS_FILE
+
+from server.src.constants import TRANSCRIPT_FILE, CHUNKS_FILE
+from server.src.models.load_model import load_peft_model
 from server.src.summarization.summarize import summarize
 
-tokenizer = AutoTokenizer.from_pretrained(SUMMARIZATION_MODEL)
-model = AutoModelForSeq2SeqLM.from_pretrained(SUMMARIZATION_MODEL).to(DEVICE)
+model, tokenizer = load_peft_model("google/long-t5-tglobal-base", "nightfury2986/longt5-dnd-finetuned", "seq2seq")
+
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 

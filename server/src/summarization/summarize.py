@@ -1,10 +1,10 @@
 import torch
 from pathlib import Path
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from server.src.constants import DEVICE, TRANSCRIPT_FILE, SUMMARY_FILE, SUMMARIZATION_MODEL
 
-tokenizer = AutoTokenizer.from_pretrained(SUMMARIZATION_MODEL)
-model = AutoModelForSeq2SeqLM.from_pretrained(SUMMARIZATION_MODEL, device_map=DEVICE)
+from server.src.constants import DEVICE, TRANSCRIPT_FILE, SUMMARY_FILE
+from server.src.models.load_model import load_peft_model
+
+model, tokenizer = load_peft_model("google/long-t5-tglobal-base", "nightfury2986/longt5-dnd-finetuned", "seq2seq")
 
 
 def summarize(prompt):
