@@ -1,4 +1,4 @@
-from torch import login
+from huggingface_hub import login
 from server.src.constants import HF_TOKEN
 
 
