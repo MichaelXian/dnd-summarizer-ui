@@ -6,3 +6,6 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 TRANSCRIPT_FILE = "transcript.txt"
 SUMMARY_FILE = "summary.txt"
 CHUNKS_FILE = "chunks.json"
+REFINED_SUMMARY_FILE = "refined_summary.txt"
+
+T5_MAX_TOKENS = 4096

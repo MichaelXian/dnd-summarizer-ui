@@ -16,7 +16,7 @@ def token_length(tokens) -> int:
 def chunk_text(lines: list[str], max_tokens: int =128, min_overlap: int =64) -> list[list[str]]:
     tokens = [tokenizer(line) for line in lines]
     for token in tokens:
-        if token_length(token) > max_tokens:
+        if token_length(token) >= max_tokens - 1:
             raise ValueError("Line has more tokens than max tokens")
 
     chunks = []
@@ -38,7 +38,7 @@ def generate_chunks() -> None:
     transcript = Path(TRANSCRIPT_FILE).read_text().split("\n")
     chunks = chunk_text(transcript)
     summarized_chunks = {
-        summarize("\n".join(chunk)): chunk
+        summarize("\n".join(chunk), 256): chunk
         for chunk in chunks
     }
     Path(CHUNKS_FILE).write_text(json.dumps(summarized_chunks))

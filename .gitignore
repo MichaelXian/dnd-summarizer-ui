@@ -1,9 +1,9 @@
 node_modules
 
 # Server temp files
-server/src/*.txt
-server/src/*.json
-server/src/*.jsonl
+**/*.txt
+**/*.json
+**/*.jsonl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

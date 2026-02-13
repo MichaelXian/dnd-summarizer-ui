@@ -4874,6 +4874,18 @@ files = [
 pywin32 = ">=223"
 
 [[package]]
+name = "python-multipart"
+version = "0.0.22"
+description = "A streaming multipart parser for Python"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "python_multipart-0.0.22-py3-none-any.whl", hash = "sha256:2b2cd894c83d21bf49d702499531c7bafd057d730c201782048f7945d82de155"},
+    {file = "python_multipart-0.0.22.tar.gz", hash = "sha256:7340bef99a7e0032613f56dc36027b959fd3b30a787ed62d310e951f7c3a3a58"},
+]
+
+[[package]]
 name = "pyttsx3"
 version = "2.99"
 description = "Text to Speech (TTS) library for Python 3. Works without internet connection or delay. Supports multiple TTS engines, including Sapi5, nsss, and espeak."
@@ -5873,4 +5885,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = "==3.12.10"
-content-hash = "c8a5f26642109a3fc4550b57298cf4a527ef769e334a4fe160648cac9dc2ed6f"
+content-hash = "ea4ee2969819dacb033ca4aa752f06a8a2d2145ef2e21f7045ae90d59b0bf7ce"

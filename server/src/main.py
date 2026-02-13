@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from server.src.init import init
 from server.src.api.routes import router
 
 origins = [
-    "http://localhost:3000",  # React dev server
-    "http://127.0.0.1:3000"   # sometimes React uses this instead
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
 ]
 
 app = FastAPI()

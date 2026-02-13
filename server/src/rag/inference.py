@@ -5,6 +5,7 @@ from sentence_transformers import SentenceTransformer
 from pathlib import Path
 
 from server.src.constants import CHUNKS_FILE, DEVICE
+from server.src.models.causal_inference import generate
 from server.src.models.load_model import load_peft_model
 
 model, tokenizer = load_peft_model("meta-llama/Llama-3.2-3B-Instruct", "nightfury2986/llama323-dnd-finetuned", "causal")
@@ -64,25 +65,6 @@ class RAGModel:
         indices_list = indices_list.tolist()
         return [self.__to_text(index) for indices in indices_list for index in indices]
 
-    def __generate(self, conversation):
-
-        inputs = tokenizer.apply_chat_template(
-            conversation,
-            tokenize=True,
-            add_generation_prompt=True,
-            return_dict=True,
-            return_tensors="pt"
-        ).to(DEVICE)
-
-        input_length = len(inputs[0])
-        outputs = model.generate(
-            inputs=inputs["input_ids"],
-            attention_mask=inputs["attention_mask"],
-            max_new_tokens=200,
-            pad_token_id=tokenizer.eos_token_id
-        )
-        generated_tokens = outputs[0][input_length:]
-        return tokenizer.decode(generated_tokens, skip_special_tokens=True)
 
     def chat(self, query):
         excerpts = self.__rag_query(query)
@@ -96,7 +78,7 @@ class RAGModel:
             "role": "user",
             "content": query
         }]
-        return self.__generate(conversation)
+        return generate(conversation)
 
 def get_rag_model() -> RAGModel:
     summarized_chunks = json.loads(Path(CHUNKS_FILE).read_text())
