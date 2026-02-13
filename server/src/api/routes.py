@@ -61,7 +61,7 @@ def get_summary(response: Response):
     return Path(SUMMARY_FILE).read_text()
 
 @router.post("/chat", status_code=200)
-async def chat(file: UploadFile, res`ponse: Response, background_tasks: BackgroundTasks):
+async def chat(file: UploadFile, response: Response, background_tasks: BackgroundTasks):
     if state.status != Status.READY:
         response.status_code = 503
         return {"error": "Chat available yet"}
