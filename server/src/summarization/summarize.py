@@ -24,7 +24,7 @@ def summarize(prompt, max_new_tokens):
             **inputs,
             max_new_tokens=max_new_tokens,
             no_repeat_ngram_size=3,
-            repetition_penalty=1.2,
+            repetition_penalty=2.5,
             num_beams=4,
             length_penalty=2.0,
             eos_token_id=tokenizer.eos_token_id,
@@ -64,6 +64,6 @@ def summarize_transcript() -> None:
     while get_token_length(summaries) > T5_MAX_TOKENS:
         summaries = "\n".join(summarize_document(summaries))
 
-    combined_prompt = "summarize: " + "\n".join(summaries)
+    combined_prompt = "summarize: " + summaries
     summary = summarize(combined_prompt, T5_MAX_TOKENS // 4)
     Path(SUMMARY_FILE).write_text(summary)

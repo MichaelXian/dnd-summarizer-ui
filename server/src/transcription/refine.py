@@ -33,8 +33,14 @@ def refine():
         "role": "system",
         "content": system_prompt
     }, {
-        "role": "system",
+        "role": "user",
         "content": summary
     }]
-    refined = generate(conversation)
+    refined = generate(conversation,
+        do_sample = True,
+        temperature = 0.3,
+        top_p = 0.9,
+        repetition_penalty = 1.15,
+        min_new_tokens=200
+    )
     Path(REFINED_SUMMARY_FILE).write_text(refined)
