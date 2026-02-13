@@ -6,8 +6,6 @@ export interface ChatResponse {
   response: string;
 }
 
-type AudioPayload = Blob | ArrayBuffer | Uint8Array;
-
 export const getTranscript = async (): Promise<string> => {
   const response = await axios.get<string>(
     `${BASE_URL}/transcript`,
@@ -25,26 +23,27 @@ export const getSummary = async (): Promise<string> => {
 };
 
 export const uploadSessionAudio = async (
-  audio: AudioPayload
+  audio: Blob,
+  filename = 'audio.webm'
 ): Promise<void> => {
+  const formData = new FormData();
+  // Provide a filename to ensure proper handling when passing a generic Blob
+  formData.append("file", audio, filename);
   await axios.post(
     `${BASE_URL}/session-audio`,
-    audio,
-    {
-      headers: { 'Content-Type': 'application/octet-stream' },
-    }
+    formData
+    // Let Axios set the correct multipart/form-data boundary automatically
   );
 }
 
 export const postChat = async (
-  audio: AudioPayload
+  audio: Blob,
 ): Promise<ChatResponse> => {
+  const formData = new FormData();
+  formData.append("file", audio, (audio as any)?.name ?? 'audio.webm');
   const response = await axios.post<ChatResponse>(
     `${BASE_URL}/chat`,
-    audio,
-    {
-      headers: { 'Content-Type': 'application/octet-stream' },
-    }
+    formData
   );
   return response.data;
 }
