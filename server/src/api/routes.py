@@ -1,9 +1,10 @@
 from pathlib import Path
 from fastapi import BackgroundTasks, APIRouter, UploadFile, File, Response
+from fastapi.responses import PlainTextResponse
 
 from server.src.audio.stt import transcribe_audio
 from server.src.audio.tts import text_to_speech
-from server.src.constants import TRANSCRIPT_FILE, SUMMARY_FILE, CHUNKS_FILE
+from server.src.constants import TRANSCRIPT_FILE, SUMMARY_FILE, CHUNKS_FILE, REFINED_SUMMARY_FILE
 from server.src.rag.chunking import generate_chunks
 from server.src.rag.inference import get_rag_model
 from server.src.state import state, Status
@@ -58,7 +59,8 @@ def get_summary(response: Response):
     if state.status != Status.READY:
         response.status_code = 503
         return {"error": "No summary available yet"}
-    return Path(SUMMARY_FILE).read_text()
+    content = Path(REFINED_SUMMARY_FILE).read_text()
+    return PlainTextResponse(content)
 
 @router.post("/chat", status_code=200)
 async def chat(file: UploadFile, response: Response, background_tasks: BackgroundTasks):
