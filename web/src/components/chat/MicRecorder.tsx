@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { postChat, type ChatResponse } from '../../api/api';
 
-const MicRecorder: React.FC = () => {
+export interface MicRecorderProps {
+  onResult?: (result: ChatResponse) => void;
+}
+
+const MicRecorder: React.FC<MicRecorderProps> = ({ onResult }) => {
   const [supported, setSupported] = useState<boolean>(true);
   const [recording, setRecording] = useState<boolean>(false);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -74,7 +78,11 @@ const MicRecorder: React.FC = () => {
           chunksRef.current = [];
           setUploading(true);
           const resp = await postChat(blob);
-          setResult(resp);
+          if (onResult) {
+            onResult(resp);
+          } else {
+            setResult(resp);
+          }
         } catch (e: any) {
           const message = e?.response?.data?.message || e?.message || 'Upload failed';
           setError(message);
